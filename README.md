@@ -9,3 +9,4 @@ Sistema de gestión y control para la Becarios en la Universidad Privada Franz T
 - [Plugin-Filamentphp-Shield](https://filamentphp.com/plugins/bezhansalleh-shield)
 
 ## Características
+Proximamente
