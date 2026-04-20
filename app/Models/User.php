@@ -30,4 +30,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function becario()
+    {
+        return $this->hasOne(Becario::class);
+    }
+
 }
