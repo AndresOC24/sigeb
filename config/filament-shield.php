@@ -68,9 +68,9 @@ return [
     |
     */
 
-    'super_admin' => [
+    'Administrador' => [
         'enabled' => true,
-        'name' => 'super_admin',
+        'name' => 'Administrador',
         'define_via_gate' => false,
         'intercept_gate' => 'before',
     ],
