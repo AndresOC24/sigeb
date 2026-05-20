@@ -16,16 +16,21 @@ class BecariosTable
         return $table
             ->columns([
                 TextColumn::make('user.name')
+                    ->label('Nombre')
                     ->searchable(),
-                TextColumn::make('carrera.id')
+                TextColumn::make('carrera.nombre')
+                    ->label('Carrera')
                     ->searchable(),
                 TextColumn::make('codigo_estudiante')
+                    ->label('Código de Estudiante')
                     ->searchable(),
                 TextColumn::make('created_at')
+                    ->label('Creado el')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Actualizado el')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

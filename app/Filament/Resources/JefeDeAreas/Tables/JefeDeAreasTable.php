@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Filament\Resources\Carreras\Tables;
+namespace App\Filament\Resources\JefeDeAreas\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
@@ -9,19 +9,21 @@ use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class CarrerasTable
+class JefeDeAreasTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('nombre')
-                    ->label('Nombre')
+                TextColumn::make('user.name')
+                    ->label('Nombre del encargado')
                     ->searchable(),
-                TextColumn::make('descripcion')
-                    ->label('Descripción')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('area.nombre')
+                    ->label('Área')
+                    ->searchable(),
+                TextColumn::make('cargo')
+                    ->label('Cargo')
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->label('Creado el')
                     ->dateTime()
