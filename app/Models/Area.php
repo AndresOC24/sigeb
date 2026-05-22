@@ -15,10 +15,10 @@ class Area extends Model
         'descripcion',
     ];
 
-    // public function jefesDeArea(): HasMany
-    // {
-    //     return $this->hasMany(JefeDeArea::class);
-    // }
+    public function jefesDeArea(): HasMany
+    {
+        return $this->hasMany(JefeDeArea::class);
+    }
 
     // public function asignacionesBecas(): HasMany
     // {

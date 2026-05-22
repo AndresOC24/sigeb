@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'Super Administrador' => [
+    'super_admin' => [
         'enabled' => true,
         'name' => 'Super Administrador',
         'define_via_gate' => false,
