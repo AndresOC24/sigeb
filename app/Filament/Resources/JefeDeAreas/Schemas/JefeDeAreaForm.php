@@ -15,6 +15,7 @@ class JefeDeAreaForm
                 Select::make('user_id')
                     ->label('Nombre del encargado')
                     ->relationship('user', 'name')
+                    ->searchable()
                     ->required(),
                 Select::make('area_id')
                     ->label('Área')

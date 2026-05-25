@@ -24,6 +24,10 @@ class AreaResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Area';
 
+    protected static ?string $navigationLabel = 'Areas';
+    protected static ?string $modelLabel = 'Area';
+    protected static ?string $pluralModelLabel = 'Areas';
+
     public static function form(Schema $schema): Schema
     {
         return AreaForm::configure($schema);

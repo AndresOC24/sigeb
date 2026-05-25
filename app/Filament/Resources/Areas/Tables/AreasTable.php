@@ -16,6 +16,7 @@ class AreasTable
         return $table
             ->columns([
                 TextColumn::make('nombre')
+                    ->label('Área')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()

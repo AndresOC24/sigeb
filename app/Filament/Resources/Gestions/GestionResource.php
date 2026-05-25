@@ -22,6 +22,10 @@ class GestionResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Gestion';
 
+    protected static ?string $navigationLabel = 'Gestiones';
+    protected static ?string $modelLabel = 'Gestión';
+    protected static ?string $pluralModelLabel = 'Gestiones';
+
     public static function form(Schema $schema): Schema
     {
         return GestionForm::configure($schema);

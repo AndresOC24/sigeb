@@ -16,14 +16,15 @@ class UserForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label('Nombre completo')
                     ->required(),
                 TextInput::make('email')
-                    ->label('Email address')
+                    ->label('Correo electrónico')
                     ->email()
                     ->required()
                     ->unique(ignoreRecord: true),
-                DateTimePicker::make('email_verified_at'),
                 TextInput::make('password')
+                    ->label('Contraseña')  
                     ->password()
                     ->required(fn (string $operation): bool => $operation === 'create')
                     ->dehydrated(fn ($state) => filled($state))

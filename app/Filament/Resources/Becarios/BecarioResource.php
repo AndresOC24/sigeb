@@ -24,6 +24,10 @@ class BecarioResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Becario';
 
+    protected static ?string $navigationLabel = 'Becarios';
+    protected static ?string $modelLabel = 'Becario';
+    protected static ?string $pluralModelLabel = 'Becarios';
+
     public static function form(Schema $schema): Schema
     {
         return BecarioForm::configure($schema);

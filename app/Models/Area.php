@@ -20,8 +20,8 @@ class Area extends Model
         return $this->hasMany(JefeDeArea::class);
     }
 
-    // public function asignacionesBecas(): HasMany
-    // {
-    //     return $this->hasMany(AsignacionBeca::class);
-    // }
+    public function asignacionesBecas(): HasMany
+    {
+        return $this->hasMany(AsignacionBeca::class);
+    }
 }

@@ -24,6 +24,10 @@ class CarreraResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Carrera';
 
+    protected static ?string $navigationLabel = 'Carreras';
+    protected static ?string $modelLabel = 'Carrera';
+    protected static ?string $pluralModelLabel = 'Carreras';
+
     public static function form(Schema $schema): Schema
     {
         return CarreraForm::configure($schema);

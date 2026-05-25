@@ -1,30 +1,47 @@
 <?php
 
-namespace App\Filament\Resources\Becas\Tables;
+namespace App\Filament\Resources\AsignacionBecas\Tables;
 
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
-use Filament\Actions\ViewAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
-class BecasTable
+class AsignacionBecasTable
 {
     public static function configure(Table $table): Table
     {
         return $table
             ->columns([
-                TextColumn::make('nombre')
-                    ->label('Beca')
+                TextColumn::make('becario.user.name')
+                    ->label('Nombre del Becario')
                     ->searchable(),
-                TextColumn::make('horas_requeridas')
+                TextColumn::make('beca.nombre')
+                    ->label('Tipo de Beca')
+                    ->searchable(),
+                TextColumn::make('gestion.nombre')
+                    ->label('Gestión')
+                    ->searchable(),
+                TextColumn::make('area.nombre')
+                    ->label('Área')
+                    ->searchable(),
+                TextColumn::make('jefeArea.nombre')
+                    ->label('Encargado')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: false),
+                TextColumn::make('materia.nombre')
+                    ->label('Materia')
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('porcentaje_obtenido')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('porcentaje_beca')
+                TextColumn::make('horas_acumuladas')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('tipo_beca')
+                TextColumn::make('estado')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
@@ -39,7 +56,6 @@ class BecasTable
                 //
             ])
             ->recordActions([
-                ViewAction::make(),
                 EditAction::make(),
             ])
             ->toolbarActions([

@@ -24,6 +24,10 @@ class JefeDeAreaResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'Encargados';
 
+    protected static ?string $navigationLabel = 'Encargados';
+    protected static ?string $modelLabel = 'Encargado';
+    protected static ?string $pluralModelLabel = 'Encargados';
+
     public static function form(Schema $schema): Schema
     {
         return JefeDeAreaForm::configure($schema);

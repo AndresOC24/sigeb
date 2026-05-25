@@ -29,8 +29,8 @@ class JefeDeArea extends Model
         return $this->belongsTo(Area::class);
     }
 
-    // public function asignacionesBecas(): HasMany
-    // {
-    //     return $this->hasMany(AsignacionBeca::class);
-    // }
+    public function asignacionesBecas(): HasMany
+    {
+        return $this->hasMany(AsignacionBeca::class);
+    }
 }
