@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
 use Database\Factories\UserFactory;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +15,7 @@ use Spatie\Permission\Traits\HasRoles;
 
 #[Fillable(['name', 'email', 'password'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable, HasRoles;
@@ -36,4 +38,21 @@ class User extends Authenticatable
         return $this->hasOne(Becario::class);
     }
 
+    public function rostro()
+    {
+        return $this->hasOne(Rostro::class, 'user_id');
+    }
+
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        if ($this->hasRole('Super Administrador')) {
+            return true;
+        }
+
+        if ($panel->getId() === 'becario') {
+            return $this->hasRole('Becario');
+        }
+        return $this->hasRole(['Encargado General', 'Encargados']);
+    }
 }

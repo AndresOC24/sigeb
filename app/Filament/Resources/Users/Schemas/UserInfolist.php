@@ -15,6 +15,8 @@ class UserInfolist
                     ->label('Nombre completo'),
                 TextEntry::make('email')
                     ->label('Correo electrónico'),
+                TextEntry::make('roles.name')
+                    ->label('Rol'),
                 TextEntry::make('created_at')
                     ->label('Creado en')
                     ->dateTime()
