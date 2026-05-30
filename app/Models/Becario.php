@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Becario extends Model
 {
@@ -14,7 +15,6 @@ class Becario extends Model
         'user_id',
         'carrera_id',
         'codigo_estudiante',
-        'facial_data',
     ];
 
     public function user(): BelongsTo
@@ -25,5 +25,10 @@ class Becario extends Model
     public function carrera(): BelongsTo
     {
         return $this->belongsTo(Carrera::class);
+    }
+
+    public function asignaciones(): HasMany
+    {
+        return $this->hasMany(AsignacionBeca::class);
     }
 }

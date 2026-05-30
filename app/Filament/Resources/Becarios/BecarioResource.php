@@ -15,6 +15,8 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
 
 class BecarioResource extends Resource
 {
@@ -49,6 +51,29 @@ class BecarioResource extends Resource
             //
         ];
     }
+
+    public static function getEloquentQuery(): Builder
+    {
+        $user = Auth::user();
+        $query = parent::getEloquentQuery();
+
+        if ($user->hasRole(['Super Administrador', 'Encargado General'])) {
+            return $query;
+        }
+
+        if ($user->hasRole('Encargados')) {
+            $jefe = $user->jefeDeArea;
+            if (! $jefe) {
+                return $query->whereRaw('1 = 0');
+            }
+            return $query->whereHas('asignaciones', function (Builder $q) use ($jefe) {
+                $q->where('jefe_area_id', $jefe->id);
+            });
+        }
+
+        return $query->whereRaw('1 = 0');
+    }
+
 
     public static function getPages(): array
     {

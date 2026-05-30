@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
         ]);
 
-        $role = Role::firstOrCreate(['name' => 'Administrador', 'guard_name' => 'web']);
+        $role = Role::firstOrCreate(['name' => 'Super Administrador', 'guard_name' => 'web']);
         $role->syncPermissions(Permission::all());
 
         $user->assignRole($role);

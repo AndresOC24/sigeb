@@ -14,16 +14,16 @@ class BecarioForm
         return $schema
             ->components([
                 Select::make('user_id')
+                ->label('Nombre del Becario')
                     ->relationship('user', 'name')
                     ->searchable()
+                    ->preload()
                     ->required(),
                 Select::make('carrera_id')
                     ->relationship('carrera', 'nombre')
                     ->required(),
                 TextInput::make('codigo_estudiante')
                     ->required(),
-                Textarea::make('facial_data')
-                    ->columnSpanFull(),
             ]);
     }
 }

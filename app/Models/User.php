@@ -55,4 +55,9 @@ class User extends Authenticatable implements FilamentUser
         }
         return $this->hasRole(['Encargado General', 'Encargados']);
     }
+
+    public function jefeDeArea()
+    {
+        return $this->hasOne(\App\Models\JefeDeArea::class);
+    }
 }
