@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class RegistroAsistenciaResource extends Resource
 {
     protected static ?string $model = RegistroAsistencia::class;
+    protected static string|\UnitEnum|null $navigationGroup = 'Asistencias';
     protected static \BackedEnum | string | null $navigationIcon = 'heroicon-o-check-badge';
     protected static ?string $navigationLabel = 'Validar Asistencias';
     protected static ?string $modelLabel = 'Registro de Asistencia';

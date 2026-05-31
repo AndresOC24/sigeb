@@ -18,7 +18,9 @@ class AsignacionBecaResource extends Resource
 {
     protected static ?string $model = AsignacionBeca::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|\UnitEnum|null $navigationGroup = 'Becas';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBookmarkSquare;
 
     protected static ?string $recordTitleAttribute = 'Asignaciones';
 

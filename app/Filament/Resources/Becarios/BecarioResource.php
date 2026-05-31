@@ -22,7 +22,9 @@ class BecarioResource extends Resource
 {
     protected static ?string $model = Becario::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+      protected static string|\UnitEnum|null $navigationGroup = 'Becas';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFaceSmile;
 
     protected static ?string $recordTitleAttribute = 'Becario';
 

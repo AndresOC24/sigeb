@@ -20,7 +20,9 @@ class CarreraResource extends Resource
 {
     protected static ?string $model = Carrera::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|\UnitEnum|null $navigationGroup = 'Configuración';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedAcademicCap;
 
     protected static ?string $recordTitleAttribute = 'Carrera';
 

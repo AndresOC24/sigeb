@@ -41,6 +41,12 @@ class RoleResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static string|\UnitEnum|null $navigationGroup = 'Administración de Permisos';
+
+    protected static ?string $navigationLabel = 'Roles';
+    protected static ?string $modelLabel = 'Rol';
+    protected static ?string $pluralModelLabel = 'Roles';
+
     #[Override]
     public static function form(Schema $schema): Schema
     {

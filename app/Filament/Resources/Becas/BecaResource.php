@@ -20,7 +20,9 @@ class BecaResource extends Resource
 {
     protected static ?string $model = Beca::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+      protected static string|\UnitEnum|null $navigationGroup = 'Becas';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedSwatch;
 
     protected static ?string $recordTitleAttribute = 'Becas';
 

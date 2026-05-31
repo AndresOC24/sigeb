@@ -23,7 +23,6 @@ class BecaForm
                     ->numeric(),
                 Select::make('tipo_beca')
                     ->options([
-            'Beca ayudantía' => 'Beca ayudantía',
             'Beca Apoyo Institucional' => 'Beca apoyo institucional',
         ])
                     ->required(),
