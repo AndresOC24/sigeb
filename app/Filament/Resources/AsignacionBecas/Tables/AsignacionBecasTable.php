@@ -30,10 +30,6 @@ class AsignacionBecasTable
                     ->label('Encargado')
                     ->searchable()
                     ->toggleable(isToggledHiddenByDefault: false),
-                TextColumn::make('materia.nombre')
-                    ->label('Materia')
-                    ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('porcentaje_obtenido')
                     ->numeric()
                     ->sortable(),

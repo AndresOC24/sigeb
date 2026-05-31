@@ -42,11 +42,6 @@ class AsignacionBecaForm
                     )
                     ->required()
                     ->label('Encargado del Becario'),
-                Select::make('materia_id')
-                    ->relationship('materia', 'nombre')
-                    ->searchable()
-                    ->preload()
-                    ->label('Materia asignada'),
                 TextInput::make('porcentaje_obtenido')
                     ->numeric()
                     ->required()

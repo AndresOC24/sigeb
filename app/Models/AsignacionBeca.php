@@ -11,7 +11,7 @@ class AsignacionBeca extends Model
 
     protected $fillable = [
         'becario_id', 'beca_id', 'gestion_id', 'area_id',
-        'jefe_area_id', 'materia_id', 'porcentaje_obtenido',
+        'jefe_area_id', 'porcentaje_obtenido',
         'horas_acumuladas', 'estado',
     ];
 
@@ -20,5 +20,4 @@ class AsignacionBeca extends Model
     public function gestion(): BelongsTo { return $this->belongsTo(Gestion::class); }
     public function area(): BelongsTo { return $this->belongsTo(Area::class); }
     public function jefeArea(): BelongsTo { return $this->belongsTo(JefeDeArea::class, 'jefe_area_id'); }
-    public function materia(): BelongsTo { return $this->belongsTo(Materia::class); }
 }
