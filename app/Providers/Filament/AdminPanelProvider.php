@@ -26,6 +26,8 @@ class AdminPanelProvider extends PanelProvider
     {
         return $panel
             ->default()
+            ->brandLogo(asset('images/LOGO-SIGEB.png'))
+            ->brandLogoHeight('2rem')
             ->id('admin')
             ->path('admin')
             ->login()

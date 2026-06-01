@@ -26,6 +26,8 @@ class BecarioPanelProvider extends PanelProvider
         return $panel
             ->id('becario')
             ->path('becario')
+            ->brandLogo(asset('images/LOGO-SIGEB.png'))
+            ->brandLogoHeight('2rem')
             ->login()
             ->colors([
                 'primary' => Color::Blue,

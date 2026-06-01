@@ -13,8 +13,10 @@ class AreaForm
         return $schema
             ->components([
                 TextInput::make('nombre')
+                    ->label('Nombre del Área')
                     ->required(),
                 Textarea::make('descripcion')
+                    ->label('Descripción')
                     ->columnSpanFull(),
             ]);
     }

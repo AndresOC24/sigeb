@@ -12,8 +12,10 @@ class CarreraForm
         return $schema
             ->components([
                 TextInput::make('nombre')
+                    ->label('Nombre de la carrera')
                     ->required(),
-                TextInput::make('descripcion'),
+                TextInput::make('descripcion')
+                    ->label('Descripción'),
             ]);
     }
 }

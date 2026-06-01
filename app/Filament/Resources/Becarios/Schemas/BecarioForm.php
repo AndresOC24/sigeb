@@ -21,9 +21,12 @@ class BecarioForm
                     ->required(),
                 Select::make('carrera_id')
                     ->relationship('carrera', 'nombre')
+                    ->label('Carrera')
                     ->required(),
                 TextInput::make('codigo_estudiante')
-                    ->required(),
+                    ->label('Código del Estudiante')
+                    ->required()
+                    ->unique(),
             ]);
     }
 }

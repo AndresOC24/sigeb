@@ -46,12 +46,12 @@ class AsignacionBecaForm
                     ->numeric()
                     ->required()
                     ->default(0)
-                    ->label('Porcentaje descuento asignado'),
+                    ->label('Descuento asignado'),
                 TextInput::make('horas_acumuladas')
                     ->required()
                     ->numeric()
                     ->default(0)
-                    ->label('Total de horas objetivo'),
+                    ->label('Horas acumuladas'),
                 Select::make('estado')
                     ->options(['activa' => 'Activa', 'suspendida' => 'Suspendida', 'finalizada' => 'Finalizada'])
                     ->default('activa')

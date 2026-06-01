@@ -12,7 +12,7 @@ class BecarioInfolist
         return $schema
             ->components([
                 TextEntry::make('user.name')
-                    ->label('User'),
+                    ->label('Becario'),
                 TextEntry::make('carrera.id')
                     ->label('Carrera'),
                 TextEntry::make('codigo_estudiante'),
@@ -21,9 +21,11 @@ class BecarioInfolist
                     ->columnSpanFull(),
                 TextEntry::make('created_at')
                     ->dateTime()
+                    ->label('Creado el')
                     ->placeholder('-'),
                 TextEntry::make('updated_at')
                     ->dateTime()
+                    ->label('Actualizado el')
                     ->placeholder('-'),
             ]);
     }

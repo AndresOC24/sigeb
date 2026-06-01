@@ -6,6 +6,7 @@ use App\Filament\Resources\AsignacionBecas\Pages\CreateAsignacionBeca;
 use App\Filament\Resources\AsignacionBecas\Pages\EditAsignacionBeca;
 use App\Filament\Resources\AsignacionBecas\Pages\ListAsignacionBecas;
 use App\Filament\Resources\AsignacionBecas\Schemas\AsignacionBecaForm;
+use App\Filament\Resources\AsignacionBecas\Pages\ViewAsignacionBeca;
 use App\Filament\Resources\AsignacionBecas\Tables\AsignacionBecasTable;
 use App\Models\AsignacionBeca;
 use BackedEnum;
@@ -46,6 +47,7 @@ class AsignacionBecaResource extends Resource
         return [
             'index' => ListAsignacionBecas::route('/'),
             'create' => CreateAsignacionBeca::route('/create'),
+            'view' => ViewAsignacionBeca::route('/{record}'),
             'edit' => EditAsignacionBeca::route('/{record}/edit'),
         ];
     }

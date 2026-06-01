@@ -19,18 +19,23 @@ class BecasTable
                     ->label('Beca')
                     ->searchable(),
                 TextColumn::make('horas_requeridas')
+                    ->label('Horas Requeridas')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('porcentaje_beca')
+                    ->label('Porcentaje de Beca')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('tipo_beca')
+                    ->label('Tipo de Beca')
                     ->badge(),
                 TextColumn::make('created_at')
+                    ->label('Creado el')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
+                    ->label('Actualizado el')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

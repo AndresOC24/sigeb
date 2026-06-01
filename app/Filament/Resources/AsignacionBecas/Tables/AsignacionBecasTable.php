@@ -7,6 +7,8 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Filament\Actions\ViewAction;
+
 
 class AsignacionBecasTable
 {
@@ -19,32 +21,38 @@ class AsignacionBecasTable
                     ->searchable(),
                 TextColumn::make('beca.nombre')
                     ->label('Tipo de Beca')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('gestion.nombre')
                     ->label('Gestión')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(),
                 TextColumn::make('area.nombre')
                     ->label('Área')
                     ->searchable(),
-                TextColumn::make('jefeArea.nombre')
+                TextColumn::make('jefeArea.user.name')
                     ->label('Encargado')
                     ->searchable()
-                    ->toggleable(isToggledHiddenByDefault: false),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('porcentaje_obtenido')
                     ->numeric()
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->sortable(),
                 TextColumn::make('horas_acumuladas')
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('estado')
                     ->toggleable(isToggledHiddenByDefault: true)
+                    ->label('Estado')
                     ->badge(),
                 TextColumn::make('created_at')
                     ->dateTime()
+                    ->label('Creado el')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->dateTime()
+                    ->label('Actualizado el')
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
@@ -52,7 +60,10 @@ class AsignacionBecasTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                
+                ViewAction::make(),
+                EditAction::make()
+                
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
