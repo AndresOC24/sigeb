@@ -8,9 +8,9 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget;
 use Illuminate\Support\Facades\Auth;
 
-class TopBecariosHorasMes extends TableWidget
+class TopBecariosMenosHoras extends TableWidget
 {
-    protected static ?int $sort = 3;
+    protected static ?int $sort = 4;
     protected int|string|array $columnSpan = ['md' => 6];
 
     public static function canView(): bool
@@ -21,10 +21,11 @@ class TopBecariosHorasMes extends TableWidget
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Top 5 becarios con más horas')
+            ->heading('Top 5 becarios con menos horas')
             ->query(
                 Becario::query()
                     ->select('becarios.*')
+                    ->whereHas('asignaciones', fn ($q) => $q->where('estado', 'activa'))
                     ->selectSub(function ($q) {
                         $q->from('registro_asistencia as ra')
                           ->join('asignaciones_becas as ab', 'ab.id', '=', 'ra.asignacion_beca_id')
@@ -40,8 +41,7 @@ class TopBecariosHorasMes extends TableWidget
                           ->selectRaw('COALESCE(b.horas_requeridas, 0)')
                           ->limit(1);
                     }, 'meta')
-                    ->having('horas_total', '>', 0)
-                    ->orderByDesc('horas_total')
+                    ->orderBy('horas_total', 'asc')
                     ->limit(5)
             )
             ->columns([
@@ -61,7 +61,8 @@ class TopBecariosHorasMes extends TableWidget
                         $pct = ($record->horas_total / $record->meta) * 100;
                         if ($pct >= 100) return 'success';
                         if ($pct >= 80) return 'warning';
-                        return 'gray';
+                        if ($pct >= 50) return 'gray';
+                        return 'danger';
                     }),
             ])
             ->paginated(false);

@@ -29,14 +29,32 @@ class BecariosPorArea extends ChartWidget
             ->with('area:id,nombre')
             ->get();
 
+        // Paleta de colores; cicla si hay más áreas que colores
+        $paleta = [
+            '#3b82f6', // azul
+            '#10b981', // verde
+            '#f59e0b', // ámbar
+            '#ef4444', // rojo
+            '#8b5cf6', // púrpura
+            '#ec4899', // rosa
+            '#14b8a6', // teal
+            '#f97316', // naranja
+            '#06b6d4', // cyan
+            '#84cc16', // lima
+        ];
+
+        $colores = $datos->map(fn($d, $i) => $paleta[$i % count($paleta)])->toArray();
+
         return [
             'datasets' => [
                 [
                     'label' => 'Becarios',
                     'data'  => $datos->pluck('total')->toArray(),
+                    'backgroundColor' => $colores,
+                    'borderWidth' => 0,
                 ],
             ],
-            'labels' => $datos->map(fn ($d) => $d->area?->nombre ?? 'Sin área')->toArray(),
+            'labels' => $datos->map(fn($d) => $d->area?->nombre ?? 'Sin área')->toArray(),
         ];
     }
 
