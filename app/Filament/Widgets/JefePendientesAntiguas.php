@@ -47,7 +47,7 @@ class JefePendientesAntiguas extends TableWidget
                 Action::make('ver')
                     ->label('Validar')
                     ->icon('heroicon-o-arrow-top-right-on-square')
-                    ->url(fn (RegistroAsistencia $r) => RegistroAsistenciaResource::getUrl('view', ['record' => $r])),
+                    ->url(fn () => RegistroAsistenciaResource::getUrl('index')),
             ])
             ->paginated(false);
     }
