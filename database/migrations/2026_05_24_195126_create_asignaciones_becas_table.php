@@ -15,7 +15,6 @@ return new class extends Migration
             $table->foreignId('gestion_id')->constrained('gestiones')->cascadeOnDelete();
             $table->foreignId('area_id')->constrained('areas')->cascadeOnDelete();
             $table->foreignId('jefe_area_id')->constrained('jefe_de_area')->cascadeOnDelete();
-            $table->foreignId('materia_id')->constrained('materia')->cascadeOnDelete();
             $table->integer('porcentaje_obtenido')->default(0);
             $table->integer('horas_acumuladas')->default(0);
             $table->enum('estado', ['activa', 'suspendida', 'finalizada'])->default('activa');
