@@ -40,7 +40,6 @@ class BecarioPanelProvider extends PanelProvider
             ->discoverWidgets(in: app_path('Filament/Becario/Widgets'), for: 'App\Filament\Becario\Widgets')
             ->widgets([
                 AccountWidget::class,
-                FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
