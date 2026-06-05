@@ -28,6 +28,8 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->brandLogo(asset('images/LOGO-SIGEB.png'))
             ->brandLogoHeight('2rem')
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('10s')
             ->id('admin')
             ->path('admin')
             ->login()
