@@ -18,6 +18,9 @@ use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+//Modelos
+use Filament\View\PanelsRenderHook;
+use Illuminate\Support\Facades\Blade;
 
 class BecarioPanelProvider extends PanelProvider
 {
@@ -29,6 +32,10 @@ class BecarioPanelProvider extends PanelProvider
             ->brandLogo(asset('images/LOGO-SIGEB.png'))
             ->brandLogoHeight('2rem')
             ->login()
+            ->renderHook(
+                PanelsRenderHook::BODY_END,
+                fn(): string => Blade::render('<script src="{{ asset(\'js/face-api-loader.js\') }}" defer></script>')
+            )
             ->colors([
                 'primary' => Color::Blue,
             ])
