@@ -60,4 +60,7 @@
             @endif
         </x-filament::section>
     @endif
+    @unless ($shouldEnroll)
+        @include('filament.becario.verificacion-modal')
+    @endunless
 </x-filament-panels::page>

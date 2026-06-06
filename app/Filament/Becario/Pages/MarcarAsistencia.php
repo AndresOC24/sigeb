@@ -63,18 +63,9 @@ class MarcarAsistencia extends Page
             ->color('success')
             ->icon('heroicon-o-arrow-right-on-rectangle')
             ->visible(fn() => ! $this->shouldEnroll && $this->asignacion && ! $this->jornadaAbierta)
-            ->action(function () {
-                RegistroAsistencia::create([
-                    'asignacion_beca_id' => $this->asignacion->id,
-                    'fecha' => today(),
-                    'hora_entrada' => now(),
-                    'estado' => 'pendiente',
-                    'verificado_facial' => false,
-                ]);
-
-                Notification::make()->title('Entrada registrada')->success()->send();
-                $this->cargarEstado();
-            });
+            ->extraAttributes([
+                'x-on:click.prevent' => "\$dispatch('open-verificacion', { tipo: 'entrada' })",
+            ]);
     }
 
     public function marcarSalidaAction(): Action
@@ -84,31 +75,8 @@ class MarcarAsistencia extends Page
             ->color('danger')
             ->icon('heroicon-o-arrow-left-on-rectangle')
             ->visible(fn() => ! $this->shouldEnroll && $this->jornadaAbierta !== null)
-            ->modalHeading('Registrar salida')
-            ->modalDescription('Describe la actividad principal que realizaste en esta jornada.')
-            ->modalSubmitActionLabel('Confirmar salida')
-            ->schema([
-                \Filament\Forms\Components\Textarea::make('actividad_principal')
-                    ->label('Actividad principal')
-                    ->required()
-                    ->minLength(10)
-                    ->maxLength(2000)
-                    ->rows(4)
-                    ->placeholder('Ej: Soporte técnico a docentes, instalación de software en laboratorio 3...'),
-            ])
-            ->action(function (array $data) {
-                $entrada = \Carbon\Carbon::parse($this->jornadaAbierta->hora_entrada);
-                $salida = now();
-                $horas = round($entrada->diffInMinutes($salida) / 60, 2);
-
-                $this->jornadaAbierta->update([
-                    'hora_salida' => $salida,
-                    'total_horas' => $horas,
-                    'actividad_principal' => $data['actividad_principal'],
-                ]);
-
-                Notification::make()->title('Salida registrada')->success()->send();
-                $this->cargarEstado();
-            });
+            ->extraAttributes([
+                'x-on:click.prevent' => "\$dispatch('open-verificacion', { tipo: 'salida' })",
+            ]);
     }
 }
