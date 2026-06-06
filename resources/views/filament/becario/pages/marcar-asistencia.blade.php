@@ -3,6 +3,19 @@
         <x-filament::section>
             <p>No tienes una asignación de beca activa. Contacta al Encargado General.</p>
         </x-filament::section>
+    @elseif ($shouldEnroll)
+        <x-filament::section>
+            <div class="space-y-2">
+                <p class="text-warning-500 font-semibold">
+                    Antes de marcar asistencia debes registrar tu rostro.
+                </p>
+                <p class="text-sm text-gray-400">
+                    Se abrirá un asistente para capturar tu rostro siguiendo 5 poses.
+                </p>
+            </div>
+        </x-filament::section>
+
+        @include('filament.becario.enrolamiento-modal', ['shouldEnroll' => true])
     @else
         <x-filament::section>
             <div class="space-y-2">

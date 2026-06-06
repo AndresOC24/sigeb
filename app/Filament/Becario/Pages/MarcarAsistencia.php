@@ -19,10 +19,14 @@ class MarcarAsistencia extends Page
     public ?AsignacionBeca $asignacion = null;
     public ?RegistroAsistencia $jornadaAbierta = null;
     public $jornadasHoy = [];
+    public bool $shouldEnroll = false;
 
     public function mount(): void
     {
-        $becario = auth()->user()->becario;
+        $user = auth()->user();
+        $this->shouldEnroll = $user->rostro === null;
+
+        $becario = $user->becario;
 
         if (! $becario) {
             return; // sin perfil de becario
@@ -58,7 +62,7 @@ class MarcarAsistencia extends Page
             ->label('Marcar Entrada')
             ->color('success')
             ->icon('heroicon-o-arrow-right-on-rectangle')
-            ->visible(fn() => $this->asignacion && ! $this->jornadaAbierta)
+            ->visible(fn() => ! $this->shouldEnroll && $this->asignacion && ! $this->jornadaAbierta)
             ->action(function () {
                 RegistroAsistencia::create([
                     'asignacion_beca_id' => $this->asignacion->id,
@@ -79,7 +83,7 @@ class MarcarAsistencia extends Page
             ->label('Marcar Salida')
             ->color('danger')
             ->icon('heroicon-o-arrow-left-on-rectangle')
-            ->visible(fn() => $this->jornadaAbierta !== null)
+            ->visible(fn() => ! $this->shouldEnroll && $this->jornadaAbierta !== null)
             ->modalHeading('Registrar salida')
             ->modalDescription('Describe la actividad principal que realizaste en esta jornada.')
             ->modalSubmitActionLabel('Confirmar salida')

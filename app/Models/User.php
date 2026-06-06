@@ -40,7 +40,7 @@ class User extends Authenticatable implements FilamentUser
 
     public function rostro()
     {
-        return $this->hasOne(Rostro::class, 'user_id');
+        return $this->hasOne(\App\Models\Rostro::class);
     }
 
 
