@@ -26,6 +26,7 @@ class PermisoMarcadoManualResource extends Resource
 {
     protected static ?string $model = PermisoMarcadoManual::class;
     protected static \BackedEnum | string | null $navigationIcon = 'heroicon-o-key';
+    protected static string|\UnitEnum|null $navigationGroup = 'Becas';
     protected static ?string $navigationLabel = 'Permisos Marcado Manual';
     protected static ?string $modelLabel = 'Permiso de Marcado Manual';
     protected static ?string $pluralModelLabel = 'Permisos de Marcado Manual';
