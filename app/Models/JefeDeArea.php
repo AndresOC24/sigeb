@@ -33,4 +33,33 @@ class JefeDeArea extends Model
     {
         return $this->hasMany(AsignacionBeca::class);
     }
+
+    public function permisosMarcadoManual()
+    {
+        return $this->hasMany(\App\Models\PermisoMarcadoManual::class);
+    }
+
+    public function tienePermisoMarcadoManualVigente(): bool
+    {
+        return $this->permisosMarcadoManual()->vigentes()->exists();
+    }
+
+    public function becariosPermitidosManual()
+    {
+        $permisos = $this->permisosMarcadoManual()->vigentes()->get();
+
+        if ($permisos->isEmpty()) {
+            return collect();
+        }
+
+        // Si algún permiso vigente tiene becario_id NULL → todos los becarios de su área (con asignación activa)
+        if ($permisos->whereNull('becario_id')->isNotEmpty()) {
+            return \App\Models\Becario::whereHas('asignaciones', function ($q) {
+                $q->where('estado', 'activa')->where('area_id', $this->area_id);
+            })->get();
+        }
+
+        // Lista específica
+        return \App\Models\Becario::whereIn('id', $permisos->pluck('becario_id')->filter())->get();
+    }
 }

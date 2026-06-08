@@ -4,7 +4,6 @@ namespace App\Filament\Resources\RegistroAsistencias;
 
 use App\Filament\Resources\RegistroAsistencias\Pages;
 use App\Models\AsignacionBeca;
-use App\Models\RegistroAsistencia;
 use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Textarea;
@@ -15,6 +14,13 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Becario;
+use App\Models\PermisoMarcadoManual;
+use App\Models\RegistroAsistencia;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Select;
+use Filament\Actions\CreateAction;
 
 class RegistroAsistenciaResource extends Resource
 {
