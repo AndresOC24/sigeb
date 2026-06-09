@@ -91,13 +91,14 @@ function enrolamientoFacial() {
         detectionLoop: null,
         currentStep: 0,
         steps: [
-            { label: 'Mira al frente',                  check: p => Math.abs(p.yaw) < 8  && Math.abs(p.pitch) < 8 },
-            { label: 'Gira ligeramente a la derecha',   check: p => p.yaw > 15 && p.yaw < 35 },
-            { label: 'Gira ligeramente a la izquierda', check: p => p.yaw < -15 && p.yaw > -35 },
-            { label: 'Inclina la cabeza arriba',        check: p => p.pitch < -10 && p.pitch > -25 },
-            { label: 'Inclina la cabeza abajo',         check: p => p.pitch > 10 && p.pitch < 25 },
+            { label: 'Mira al frente',                  check: p => Math.abs(p.yaw) < 12 && Math.abs(p.pitch) < 12 },
+            { label: 'Gira ligeramente a la izquierda',   check: p => p.yaw > 12 && p.yaw < 45 },
+            { label: 'Gira ligeramente a la derecha', check: p => p.yaw < -12 && p.yaw > -45 },
+            { label: 'Inclina la cabeza arriba',        check: p => p.pitch < -8 && p.pitch > -35 },
+            { label: 'Inclina la cabeza abajo',         check: p => p.pitch > 8 && p.pitch < 35 },
         ],
         holdFrames: 0,
+        HOLD_REQUIRED: 4,
         HOLD_REQUIRED: 8,
 
         async init() {

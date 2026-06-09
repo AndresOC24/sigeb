@@ -109,18 +109,18 @@ function verificacionFacial() {
         currentStep: 0,
         attempts: 0,
         MAX_ATTEMPTS: 3,
-        HOLD_REQUIRED: 6,
+        HOLD_REQUIRED: 3,
         holdFrames: 0,
         capturedDescriptor: null,
         steps: [],
 
         buildSteps() {
             const gesture = Math.random() < 0.5
-                ? { label: 'Gira ligeramente a la derecha', check: p => p.yaw > 15 && p.yaw < 35 }
-                : { label: 'Gira ligeramente a la izquierda', check: p => p.yaw < -15 && p.yaw > -35 };
+                ? { label: 'Gira ligeramente a la izquierda', check: p => p.yaw > 12 && p.yaw < 45 }
+                : { label: 'Gira ligeramente a la derecha', check: p => p.yaw < -12 && p.yaw > -45 };
 
             this.steps = [
-                { label: 'Mira al frente', check: p => Math.abs(p.yaw) < 8 && Math.abs(p.pitch) < 8, capture: true },
+                { label: 'Mira al frente', check: p => Math.abs(p.yaw) < 12 && Math.abs(p.pitch) < 12, capture: true },
                 gesture,
             ];
         },

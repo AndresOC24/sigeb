@@ -37,7 +37,7 @@
     async function detectSingle(input) {
         await loadModels();
         return faceapi
-            .detectSingleFace(input, new faceapi.SsdMobilenetv1Options({ minConfidence: 0.6 }))
+            .detectSingleFace(input, new faceapi.SsdMobilenetv1Options({ minConfidence: 0.4 }))
             .withFaceLandmarks()
             .withFaceDescriptor();
     }
