@@ -5,12 +5,14 @@ use App\Http\Controllers\Becario\RostroController;
 use App\Http\Controllers\Becario\AsistenciaFacialController;
 
 Route::get('/', function () {
+    $user = auth()->user();
+
+    if ($user instanceof \App\Models\User && ! $user->canAccessPanel(\Filament\Facades\Filament::getPanel('admin'))) {
+        return redirect('/becario');
+    }
+
     return redirect('/admin');
 });
-
-// Route::get('/becario', function () {
-//     return redirect('/admin');
-// });
 
 Route::middleware(['auth'])->prefix('becario')->group(function () {
     Route::post('rostro', [RostroController::class, 'store'])->name('becario.rostro.store');
