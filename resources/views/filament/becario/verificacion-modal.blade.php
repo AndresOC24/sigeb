@@ -90,6 +90,13 @@
 
         <div class="sigeb-vf-buttons">
             <button type="button" @click="cancel()" class="sigeb-vf-btn sigeb-vf-btn-cancel">Cancelar</button>
+            <button
+                type="button"
+                x-show="tipo === 'salida'"
+                @click="submit()"
+                :disabled="! canSubmit"
+                class="sigeb-vf-btn sigeb-vf-btn-primary"
+            >Enviar</button>
         </div>
     </div>
 </div>
@@ -112,7 +119,12 @@ function verificacionFacial() {
         HOLD_REQUIRED: 3,
         holdFrames: 0,
         capturedDescriptor: null,
+        faceVerified: false,
         steps: [],
+
+        get canSubmit() {
+            return this.faceVerified && this.actividad.trim().length >= 10;
+        },
 
         buildSteps() {
             const gesture = Math.random() < 0.5
@@ -139,6 +151,7 @@ function verificacionFacial() {
             this.currentStep = 0;
             this.holdFrames = 0;
             this.capturedDescriptor = null;
+            this.faceVerified = false;
             this.buildSteps();
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -194,7 +207,17 @@ function verificacionFacial() {
                         this.currentStep++;
 
                         if (this.currentStep >= this.steps.length) {
-                            await this.submit();
+                            if (this.tipo === 'salida') {
+                                // No autoenviar: espera a que el becario describa la
+                                // actividad y presione "Enviar".
+                                this.faceVerified = true;
+                                this.oval_color = '#22c55e';
+                                this.instruction = 'Rostro verificado';
+                                this.status = 'Describe tu actividad y presiona Enviar.';
+                                clearInterval(this.detectionLoop);
+                            } else {
+                                await this.submit();
+                            }
                         } else {
                             this.instruction = this.steps[this.currentStep].label;
                             this.status = 'Cambia de pose...';

@@ -24,6 +24,9 @@ class JefeDeAreasTable
                 TextColumn::make('cargo')
                     ->label('Cargo')
                     ->searchable(),
+                TextColumn::make('user.email')
+                    ->label('Correo electrónico')
+                    ->searchable(),
                 TextColumn::make('created_at')
                     ->label('Creado el')
                     ->dateTime()
