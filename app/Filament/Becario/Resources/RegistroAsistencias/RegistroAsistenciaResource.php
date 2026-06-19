@@ -4,6 +4,9 @@ namespace App\Filament\Becario\Resources\RegistroAsistencias;
 
 use App\Filament\Becario\Resources\RegistroAsistencias\Pages;
 use App\Models\RegistroAsistencia;
+use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
@@ -11,6 +14,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\Filter;
 use Filament\Forms\Components\DatePicker;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Storage;
 use Filament\Tables\Columns\IconColumn;
 
 class RegistroAsistenciaResource extends Resource
@@ -58,6 +62,10 @@ class RegistroAsistenciaResource extends Resource
                         'rechazado' => 'danger',
                         default     => 'gray',
                     }),
+                IconColumn::make('evidencia')
+                    ->label('Evidencia')
+                    ->boolean()
+                    ->state(fn(RegistroAsistencia $r) => filled($r->evidencia)),
                 IconColumn::make('verificado_facial')
                     ->label('Facial')
                     ->boolean(),
@@ -83,6 +91,55 @@ class RegistroAsistenciaResource extends Resource
             ])
             ->recordActions([
                 \Filament\Actions\ViewAction::make(),
+                Action::make('subirEvidencia')
+                    ->label(fn(RegistroAsistencia $r) => $r->evidencia ? 'Reemplazar evidencia' : 'Subir evidencia')
+                    ->icon('heroicon-o-paper-clip')
+                    ->color(fn(RegistroAsistencia $r) => $r->evidencia ? 'gray' : 'primary')
+                    // Solo para jornadas cerradas que aún no se aprueban. Si fue rechazada,
+                    // puede volver a subir el documento corregido.
+                    ->visible(fn(RegistroAsistencia $r) => $r->hora_salida !== null && in_array($r->estado, ['pendiente', 'rechazado']))
+                    ->modalHeading('Subir evidencia de la jornada')
+                    ->modalDescription('Adjunta tu informe (PDF o Word) con la descripción y las fotografías de lo realizado, usando el formato del área.')
+                    ->modalSubmitActionLabel('Guardar evidencia')
+                    ->schema([
+                        FileUpload::make('evidencia')
+                            ->label('Documento de evidencia')
+                            ->disk('local')
+                            ->directory('evidencias')
+                            ->visibility('private')
+                            ->acceptedFileTypes([
+                                'application/pdf',
+                                'application/msword',
+                                'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                            ])
+                            ->maxSize(10240)
+                            ->storeFileNamesIn('evidencia_nombre')
+                            ->required(),
+                    ])
+                    ->action(function (RegistroAsistencia $r, array $data) {
+                        // Reemplazo: elimina el archivo anterior para no dejar huérfanos.
+                        if ($r->evidencia && Storage::disk('local')->exists($r->evidencia)) {
+                            Storage::disk('local')->delete($r->evidencia);
+                        }
+                        $r->update([
+                            'evidencia' => $data['evidencia'],
+                            'evidencia_nombre' => $data['evidencia_nombre'] ?? basename($data['evidencia']),
+                            'evidencia_subida_en' => now(),
+                        ]);
+                        Notification::make()->title('Evidencia subida correctamente')->success()->send();
+                    }),
+                Action::make('descargarEvidencia')
+                    ->label('Descargar evidencia')
+                    ->icon('heroicon-o-document-arrow-down')
+                    ->color('gray')
+                    ->visible(fn(RegistroAsistencia $r) => filled($r->evidencia))
+                    ->action(function (RegistroAsistencia $r) {
+                        if (! $r->evidencia || ! Storage::disk('local')->exists($r->evidencia)) {
+                            Notification::make()->title('El archivo ya no está disponible')->warning()->send();
+                            return;
+                        }
+                        return Storage::disk('local')->download($r->evidencia, $r->evidencia_nombre);
+                    }),
             ]);
     }
 

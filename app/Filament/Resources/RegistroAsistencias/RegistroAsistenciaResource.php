@@ -64,6 +64,10 @@ class RegistroAsistenciaResource extends Resource
                 TextColumn::make('hora_salida')->time('H:i')->label('Salida')->placeholder('—'),
                 TextColumn::make('total_horas')->numeric(2)->label('Horas')->placeholder('—'),
                 TextColumn::make('actividad_principal')->label('Actividad')->limit(40)->placeholder('—'),
+                \Filament\Tables\Columns\IconColumn::make('evidencia')
+                    ->label('Evidencia')
+                    ->boolean()
+                    ->state(fn(RegistroAsistencia $r) => filled($r->evidencia)),
                 TextColumn::make('estado')
                     ->badge()
                     ->color(fn(string $state): string => match ($state) {
@@ -84,10 +88,21 @@ class RegistroAsistenciaResource extends Resource
                     ->default('pendiente'),
             ])
             ->recordActions([
+                Action::make('descargarEvidencia')
+                    ->label('Evidencia')->icon('heroicon-o-document-arrow-down')->color('gray')
+                    ->visible(fn(RegistroAsistencia $r) => filled($r->evidencia))
+                    ->action(function (RegistroAsistencia $r) {
+                        if (! $r->evidencia || ! \Illuminate\Support\Facades\Storage::disk('local')->exists($r->evidencia)) {
+                            Notification::make()->title('El archivo ya no está disponible')->warning()->send();
+                            return;
+                        }
+                        return \Illuminate\Support\Facades\Storage::disk('local')->download($r->evidencia, $r->evidencia_nombre);
+                    }),
                 Action::make('aprobar')
                     ->label('Aprobar')->icon('heroicon-o-check-circle')->color('success')
                     ->requiresConfirmation()
-                    ->visible(fn(RegistroAsistencia $r) => $r->estado === 'pendiente' && $r->hora_salida !== null)
+                    // El documento de evidencia es obligatorio: sin él no se puede aprobar la jornada.
+                    ->visible(fn(RegistroAsistencia $r) => $r->estado === 'pendiente' && $r->hora_salida !== null && filled($r->evidencia))
                     ->action(function (RegistroAsistencia $r) {
                         $r->update([
                             'estado' => 'aprobado',
