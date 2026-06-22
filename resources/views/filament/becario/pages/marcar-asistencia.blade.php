@@ -189,6 +189,36 @@
                                     <x-filament::badge color="info">Completada</x-filament::badge>
                                 @endif
                             </div>
+
+                            @unless ($enCurso)
+                                <div
+                                    style="width:100%; display:flex; flex-wrap:wrap; align-items:center; gap:0.75rem; border-top-width:1px; padding-top:0.75rem; margin-top:0.25rem;"
+                                    class="border-gray-200 dark:border-white/10"
+                                >
+                                    @if (in_array($j->estado, ['pendiente', 'rechazado']))
+                                        {{ ($this->subirEvidenciaAction)(['registro' => $j->id]) }}
+                                    @endif
+
+                                    @if (filled($j->evidencia))
+                                        {{ ($this->descargarEvidenciaAction)(['registro' => $j->id]) }}
+                                        <span
+                                            style="display:inline-flex; align-items:center; gap:0.35rem; font-size:0.8rem;"
+                                            class="text-success-600 dark:text-success-400"
+                                        >
+                                            <x-filament::icon
+                                                icon="heroicon-o-check-circle"
+                                                aria-hidden="true"
+                                                style="height:1rem; width:1rem;"
+                                            />
+                                            Evidencia subida{{ $j->evidencia_subida_en ? ' · ' . \Carbon\Carbon::parse($j->evidencia_subida_en)->format('d/m H:i') : '' }}
+                                        </span>
+                                    @else
+                                        <span style="font-size:0.8rem;" class="text-gray-500 dark:text-gray-400">
+                                            Aún no has subido la evidencia de esta jornada.
+                                        </span>
+                                    @endif
+                                </div>
+                            @endunless
                         </li>
                     @endforeach
                 </ul>

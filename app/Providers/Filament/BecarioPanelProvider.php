@@ -31,7 +31,7 @@ class BecarioPanelProvider extends PanelProvider
             ->path('becario')
             ->brandLogo(asset('images/LOGO-SIGEB.png'))
             ->brandLogoHeight('2rem')
-            ->login()
+            ->login(\App\Filament\Auth\Login::class)
             ->renderHook(
                 PanelsRenderHook::BODY_END,
                 fn(): string => Blade::render('<script src="{{ asset(\'js/face-api-loader.js\') }}" defer></script>')
@@ -61,6 +61,7 @@ class BecarioPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\EnsureUserIsActive::class,
             ]);
     }
 }

@@ -32,7 +32,7 @@ class AdminPanelProvider extends PanelProvider
             ->databaseNotificationsPolling('10s')
             ->id('admin')
             ->path('admin')
-            ->login()
+            ->login(\App\Filament\Auth\Login::class)
             ->colors([
                 'primary' => Color::Amber,
             ])
@@ -57,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\EnsureUserIsActive::class,
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
