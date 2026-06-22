@@ -45,7 +45,7 @@
     <div class="sigeb-fr-modal">
         <h2 class="sigeb-fr-title">Registro de rostro</h2>
         <p class="sigeb-fr-subtitle">
-            Es la primera vez que marcas asistencia. Necesitamos registrar tu rostro siguiendo 5 poses.
+            Es la primera vez que marcas asistencia. Necesitamos registrar tu rostro siguiendo 4 poses.
         </p>
 
         <div class="sigeb-fr-camera-wrap">
@@ -67,7 +67,7 @@
         </div>
 
         <div class="sigeb-fr-progress">
-            <template x-for="i in 5" :key="i">
+            <template x-for="i in 4" :key="i">
                 <div class="sigeb-fr-progress-item" :class="{ 'done': i <= captured_count }"></div>
             </template>
         </div>
@@ -95,7 +95,6 @@ function enrolamientoFacial() {
             { label: 'Gira ligeramente a la izquierda',   check: p => p.yaw > 12 && p.yaw < 45 },
             { label: 'Gira ligeramente a la derecha', check: p => p.yaw < -12 && p.yaw > -45 },
             { label: 'Inclina la cabeza arriba',        check: p => p.pitch < -8 && p.pitch > -35 },
-            { label: 'Inclina la cabeza abajo',         check: p => p.pitch > 8 && p.pitch < 35 },
         ],
         holdFrames: 0,
         HOLD_REQUIRED: 4,
@@ -106,7 +105,7 @@ function enrolamientoFacial() {
 
             if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
                 this.instruction = 'Cámara no disponible';
-                this.status = 'Tu navegador bloqueó el acceso a la cámara. Usa HTTPS o localhost.';
+                this.status = 'Tu navegador bloqueó el acceso a la cámara.';
                 return;
             }
 
