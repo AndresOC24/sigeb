@@ -22,15 +22,23 @@ class BecariosActivosLista extends TableWidget
     {
         return $table
             ->heading('Becarios activos')
+            ->description('Becarios con beca activa')
             ->query(
                 Becario::query()
                     ->whereHas('asignaciones', fn ($q) => $q->where('estado', 'activa'))
                     ->limit(5)
             )
             ->columns([
-                TextColumn::make('user.name')->label('Nombre'),
-                TextColumn::make('codigo_estudiante')->label('Código'),
+                TextColumn::make('user.name')
+                    ->label('Nombre')
+                    ->icon('heroicon-m-user-circle')
+                    ->iconColor('success'),
+                TextColumn::make('codigo_estudiante')
+                    ->label('Código')
+                    ->badge()
+                    ->color('success'),
             ])
+            ->striped()
             ->paginated(false);
     }
 }

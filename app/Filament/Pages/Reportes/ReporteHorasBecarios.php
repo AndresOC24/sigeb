@@ -126,7 +126,7 @@ class ReporteHorasBecarios extends Page implements HasForms, HasTable
     protected function getReporteQuery(): Builder
     {
         $query = AsignacionBeca::query()
-            ->with(['becario.user', 'becario.carrera', 'beca', 'gestion', 'area']);
+            ->with(['becario.user', 'becario.carrera', 'beca', 'gestion', 'area', 'jefeArea.user']);
 
         $user = auth()->user();
         if ($user->hasRole('Encargados') && ! $user->hasRole('Encargado General')) {

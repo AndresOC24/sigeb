@@ -22,6 +22,7 @@ class TopBecariosHorasMes extends TableWidget
     {
         return $table
             ->heading('Top 5 becarios con más horas')
+            ->description('Becarios con mayor avance de horas')
             ->query(
                 Becario::query()
                     ->select('becarios.*')
@@ -45,8 +46,15 @@ class TopBecariosHorasMes extends TableWidget
                     ->limit(5)
             )
             ->columns([
-                TextColumn::make('user.name')->label('Becario'),
-                TextColumn::make('horas_total')->label('Horas')->numeric(2),
+                TextColumn::make('user.name')
+                    ->label('Becario')
+                    ->icon('heroicon-m-arrow-trending-up')
+                    ->iconColor('success'),
+                TextColumn::make('horas_total')
+                    ->label('Horas')
+                    ->numeric(2)
+                    ->badge()
+                    ->color('success'),
                 TextColumn::make('meta')->label('Meta'),
                 TextColumn::make('progreso')
                     ->label('Progreso')
@@ -64,6 +72,7 @@ class TopBecariosHorasMes extends TableWidget
                         return 'gray';
                     }),
             ])
+            ->striped()
             ->paginated(false);
     }
 }

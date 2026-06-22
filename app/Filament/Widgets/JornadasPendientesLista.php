@@ -22,6 +22,7 @@ class JornadasPendientesLista extends TableWidget
     {
         return $table
             ->heading('Jornadas pendientes')
+            ->description('Últimas jornadas sin aprobar')
             ->query(
                 RegistroAsistencia::query()
                     ->where('estado', 'pendiente')
@@ -29,10 +30,19 @@ class JornadasPendientesLista extends TableWidget
                     ->limit(5)
             )
             ->columns([
-                TextColumn::make('asignacionBeca.becario.user.name')->label('Becario'),
-                TextColumn::make('fecha')->date('d/m/Y'),
-                TextColumn::make('hora_entrada')->time('H:i')->label('Entrada'),
+                TextColumn::make('asignacionBeca.becario.user.name')
+                    ->label('Becario')
+                    ->icon('heroicon-m-clock')
+                    ->iconColor('warning'),
+                TextColumn::make('fecha')
+                    ->date('d/m/Y'),
+                TextColumn::make('hora_entrada')
+                    ->time('H:i')
+                    ->label('Entrada')
+                    ->badge()
+                    ->color('warning'),
             ])
+            ->striped()
             ->paginated(false);
     }
 }

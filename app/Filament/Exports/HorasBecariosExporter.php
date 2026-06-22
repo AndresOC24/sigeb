@@ -6,6 +6,7 @@ use App\Models\AsignacionBeca;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
+use Illuminate\Support\Facades\Auth;
 
 class HorasBecariosExporter extends Exporter
 {
@@ -13,9 +14,10 @@ class HorasBecariosExporter extends Exporter
 
     public static function getColumns(): array
     {
-        return [
+        $columns = [
             ExportColumn::make('becario.user.name')->label('Becario'),
             ExportColumn::make('becario.codigo_estudiante')->label('Código'),
+            ExportColumn::make('becario.user.email')->label('Correo'),
             ExportColumn::make('becario.carrera.nombre')->label('Carrera'),
             ExportColumn::make('area.nombre')->label('Área'),
             ExportColumn::make('beca.nombre')->label('Beca'),
@@ -30,6 +32,14 @@ class HorasBecariosExporter extends Exporter
                 }),
             ExportColumn::make('estado')->label('Estado'),
         ];
+
+        // Solo el Encargado General o el Super Administrador pueden exportar el encargado de área.
+        if (Auth::user()?->hasAnyRole(['Super Administrador', 'Encargado General'])) {
+            $columns[] = ExportColumn::make('jefeArea.user.name')
+                ->label('Encargado de Área');
+        }
+
+        return $columns;
     }
 
     public static function getCompletedNotificationBody(Export $export): string

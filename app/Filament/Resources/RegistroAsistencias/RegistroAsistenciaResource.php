@@ -58,7 +58,8 @@ class RegistroAsistenciaResource extends Resource
             ->columns([
                 TextColumn::make('asignacionBeca.becario.user.name')
                     ->label('Becario')->searchable()->sortable(),
-                TextColumn::make('asignacionBeca.area.nombre')->label('Área'),
+                TextColumn::make('asignacionBeca.area.nombre')->label('Área')
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('fecha')->date('d/m/Y')->sortable(),
                 TextColumn::make('hora_entrada')->time('H:i')->label('Entrada'),
                 TextColumn::make('hora_salida')->time('H:i')->label('Salida')->placeholder('—'),

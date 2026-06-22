@@ -22,6 +22,7 @@ class TopBecariosMenosHoras extends TableWidget
     {
         return $table
             ->heading('Top 5 becarios con menos horas')
+            ->description('Becarios con menor avance de horas')
             ->query(
                 Becario::query()
                     ->select('becarios.*')
@@ -45,8 +46,15 @@ class TopBecariosMenosHoras extends TableWidget
                     ->limit(5)
             )
             ->columns([
-                TextColumn::make('user.name')->label('Becario'),
-                TextColumn::make('horas_total')->label('Horas')->numeric(2),
+                TextColumn::make('user.name')
+                    ->label('Becario')
+                    ->icon('heroicon-m-arrow-trending-down')
+                    ->iconColor('danger'),
+                TextColumn::make('horas_total')
+                    ->label('Horas')
+                    ->numeric(2)
+                    ->badge()
+                    ->color('danger'),
                 TextColumn::make('meta')->label('Meta'),
                 TextColumn::make('progreso')
                     ->label('Progreso')
@@ -65,6 +73,7 @@ class TopBecariosMenosHoras extends TableWidget
                         return 'danger';
                     }),
             ])
+            ->striped()
             ->paginated(false);
     }
 }
