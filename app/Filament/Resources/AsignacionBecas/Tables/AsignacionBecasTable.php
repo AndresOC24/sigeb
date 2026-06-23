@@ -15,6 +15,7 @@ class AsignacionBecasTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 TextColumn::make('becario.user.name')
                     ->label('Nombre del Becario')

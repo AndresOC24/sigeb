@@ -14,6 +14,7 @@ class BecariosTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Nombre')
@@ -23,6 +24,7 @@ class BecariosTable
                     ->searchable(),
                 TextColumn::make('codigo_estudiante')
                     ->label('Código de Estudiante')
+                    ->alignCenter()
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->label('Creado el')

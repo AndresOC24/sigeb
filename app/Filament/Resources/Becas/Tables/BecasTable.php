@@ -14,6 +14,7 @@ class BecasTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 TextColumn::make('nombre')
                     ->label('Beca')
@@ -21,10 +22,12 @@ class BecasTable
                 TextColumn::make('horas_requeridas')
                     ->label('Horas Requeridas')
                     ->numeric()
+                    ->alignCenter()
                     ->sortable(),
                 TextColumn::make('porcentaje_beca')
                     ->label('Porcentaje de Beca')
                     ->numeric()
+                    ->alignCenter()
                     ->sortable(),
                 TextColumn::make('tipo_beca')
                     ->label('Tipo de Beca')

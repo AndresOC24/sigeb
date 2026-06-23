@@ -14,6 +14,7 @@ class JefeDeAreasTable
     public static function configure(Table $table): Table
     {
         return $table
+            ->striped()
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Nombre del encargado')
