@@ -3,12 +3,14 @@
 namespace App\Filament\Becario\Pages;
 
 use App\Models\AsignacionBeca;
+use App\Models\PermisoMarcadoManual;
 use App\Models\RegistroAsistencia;
 use Carbon\Carbon;
 use Filament\Pages\Page;
 use Filament\Notifications\Notification;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Textarea;
 use Illuminate\Support\Facades\Storage;
 
 class MarcarAsistencia extends Page
@@ -22,6 +24,7 @@ class MarcarAsistencia extends Page
     public ?RegistroAsistencia $jornadaAbierta = null;
     public $jornadasHoy = [];
     public bool $shouldEnroll = false;
+    public ?PermisoMarcadoManual $permisoManual = null;
 
     public function mount(): void
     {
@@ -37,6 +40,9 @@ class MarcarAsistencia extends Page
         $this->asignacion = $becario->asignaciones()
             ->where('estado', 'activa')
             ->first();
+
+        // Permiso vigente que exonera de la verificación facial (cámara averiada, etc.).
+        $this->permisoManual = $becario->permisoMarcadoManualVigente();
 
         $this->cargarEstado();
     }
@@ -64,7 +70,7 @@ class MarcarAsistencia extends Page
             ->label('Marcar Entrada')
             ->color('success')
             ->icon('heroicon-o-arrow-right-on-rectangle')
-            ->visible(fn() => ! $this->shouldEnroll && $this->asignacion && ! $this->jornadaAbierta)
+            ->visible(fn() => ! $this->permisoManual && ! $this->shouldEnroll && $this->asignacion && ! $this->jornadaAbierta)
             ->extraAttributes([
                 'x-on:click.prevent' => "\$dispatch('open-verificacion', { tipo: 'entrada' })",
             ]);
@@ -76,10 +82,85 @@ class MarcarAsistencia extends Page
             ->label('Marcar Salida')
             ->color('danger')
             ->icon('heroicon-o-arrow-left-on-rectangle')
-            ->visible(fn() => ! $this->shouldEnroll && $this->jornadaAbierta !== null)
+            ->visible(fn() => ! $this->permisoManual && ! $this->shouldEnroll && $this->jornadaAbierta !== null)
             ->extraAttributes([
                 'x-on:click.prevent' => "\$dispatch('open-verificacion', { tipo: 'salida' })",
             ]);
+    }
+
+    /**
+     * Marca la entrada sin verificación facial, amparado por un permiso vigente.
+     */
+    public function marcarEntradaManualAction(): Action
+    {
+        return Action::make('marcarEntradaManual')
+            ->label('Marcar Entrada (sin verificación facial)')
+            ->color('success')
+            ->icon('heroicon-o-arrow-right-on-rectangle')
+            ->visible(fn() => $this->permisoManual && $this->asignacion && ! $this->jornadaAbierta)
+            ->requiresConfirmation()
+            ->modalHeading('Marcar entrada sin verificación facial')
+            ->modalDescription('Se registrará tu entrada amparada en el permiso vigente. Quedará pendiente de revisión.')
+            ->action(function () {
+                if (! $this->permisoManual || ! $this->asignacion || $this->jornadaAbierta) {
+                    Notification::make()->title('No puedes marcar entrada en este momento')->warning()->send();
+                    return;
+                }
+
+                RegistroAsistencia::create([
+                    'asignacion_beca_id' => $this->asignacion->id,
+                    'fecha' => today(),
+                    'hora_entrada' => now(),
+                    'estado' => 'pendiente',
+                    'verificado_facial' => false,
+                    'confidence_score' => null,
+                    'permiso_marcado_manual_id' => $this->permisoManual->id,
+                ]);
+
+                Notification::make()->title('Entrada registrada (sin verificación facial)')->success()->send();
+                $this->cargarEstado();
+            });
+    }
+
+    /**
+     * Marca la salida sin verificación facial, pidiendo la actividad principal.
+     */
+    public function marcarSalidaManualAction(): Action
+    {
+        return Action::make('marcarSalidaManual')
+            ->label('Marcar Salida (sin verificación facial)')
+            ->color('danger')
+            ->icon('heroicon-o-arrow-left-on-rectangle')
+            ->visible(fn() => $this->permisoManual && $this->jornadaAbierta !== null)
+            ->modalHeading('Marcar salida sin verificación facial')
+            ->modalSubmitActionLabel('Registrar salida')
+            ->schema([
+                Textarea::make('actividad_principal')
+                    ->label('Actividad principal')
+                    ->required()->minLength(10)->maxLength(2000)->rows(3)
+                    ->placeholder('Ej: Soporte técnico a docentes, instalación de software en laboratorio 3...'),
+            ])
+            ->action(function (array $data) {
+                if (! $this->permisoManual || ! $this->jornadaAbierta) {
+                    Notification::make()->title('No tienes una jornada abierta')->warning()->send();
+                    return;
+                }
+
+                $entrada = Carbon::parse($this->jornadaAbierta->hora_entrada);
+                $salida = now();
+
+                $this->jornadaAbierta->update([
+                    'hora_salida' => $salida,
+                    'total_horas' => round($entrada->diffInMinutes($salida) / 60, 2),
+                    'actividad_principal' => $data['actividad_principal'],
+                    'verificado_facial' => false,
+                    'confidence_score' => null,
+                    'permiso_marcado_manual_id' => $this->permisoManual->id,
+                ]);
+
+                Notification::make()->title('Salida registrada (sin verificación facial)')->success()->send();
+                $this->cargarEstado();
+            });
     }
 
     /**

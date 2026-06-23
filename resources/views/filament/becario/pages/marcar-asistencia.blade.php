@@ -17,7 +17,7 @@
                 </div>
             </div>
         </x-filament::section>
-    @elseif ($shouldEnroll)
+    @elseif ($shouldEnroll && ! $permisoManual)
         <x-filament::section>
             <div class="flex items-start gap-3">
                 <x-filament::icon
@@ -86,10 +86,39 @@
                     @endif
                 </div>
 
+                @if ($permisoManual)
+                    <div
+                        style="display:flex; align-items:flex-start; gap:0.75rem; border-width:1px; border-radius:0.75rem; padding:1rem;"
+                        class="border-warning-300 bg-warning-50/60 dark:border-warning-500/30 dark:bg-warning-500/10"
+                    >
+                        <x-filament::icon
+                            icon="heroicon-o-shield-check"
+                            aria-hidden="true"
+                            style="height:1.25rem; width:1.25rem; flex-shrink:0; margin-top:0.1rem;"
+                            class="text-warning-600 dark:text-warning-400"
+                        />
+                        <div class="space-y-1">
+                            <p class="font-semibold text-gray-950 dark:text-white">
+                                Marcado sin verificación facial habilitado
+                            </p>
+                            <p class="text-sm text-gray-500 dark:text-gray-400">
+                                Tienes un permiso vigente hasta
+                                {{ \Carbon\Carbon::parse($permisoManual->fecha_fin)->format('d/m/Y H:i') }}.
+                                Tus marcas quedarán registradas como <strong>sin verificación facial</strong> y pendientes de revisión.
+                            </p>
+                        </div>
+                    </div>
+                @endif
+
                 <div style="border-top-width:1px; padding-top:1.5rem;" class="border-gray-200 dark:border-white/10">
                     <div style="display:flex; flex-wrap:wrap; gap:1rem 1.5rem;">
-                        {{ $this->marcarEntradaAction }}
-                        {{ $this->marcarSalidaAction }}
+                        @if ($permisoManual)
+                            {{ $this->marcarEntradaManualAction }}
+                            {{ $this->marcarSalidaManualAction }}
+                        @else
+                            {{ $this->marcarEntradaAction }}
+                            {{ $this->marcarSalidaAction }}
+                        @endif
                     </div>
                 </div>
             </div>

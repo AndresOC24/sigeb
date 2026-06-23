@@ -31,4 +31,33 @@ class Becario extends Model
     {
         return $this->hasMany(AsignacionBeca::class);
     }
+
+    /**
+     * Permiso de marcado manual vigente que exonera a este becario de la
+     * verificación facial. Aplica si hay un permiso aprobado dirigido a él
+     * directamente, o uno con becario_id NULL para el área de su asignación
+     * activa (todos los becarios del área).
+     */
+    public function permisoMarcadoManualVigente(): ?PermisoMarcadoManual
+    {
+        $asignacion = $this->asignaciones()->where('estado', 'activa')->first();
+
+        if (! $asignacion) {
+            return null;
+        }
+
+        $areaId = $asignacion->area_id;
+
+        return PermisoMarcadoManual::query()
+            ->vigentes()
+            ->where(function ($q) use ($areaId) {
+                $q->where('becario_id', $this->id)
+                    ->orWhere(function ($q2) use ($areaId) {
+                        $q2->whereNull('becario_id')
+                            ->whereHas('jefeDeArea', fn ($j) => $j->where('area_id', $areaId));
+                    });
+            })
+            ->latest('fecha_fin')
+            ->first();
+    }
 }
