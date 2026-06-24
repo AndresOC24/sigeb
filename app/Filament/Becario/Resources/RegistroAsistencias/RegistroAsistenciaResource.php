@@ -39,6 +39,7 @@ class RegistroAsistenciaResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->poll('15s')
             ->columns([
                 TextColumn::make('fecha')
                     ->date('d/m/Y')
